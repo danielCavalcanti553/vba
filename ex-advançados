@@ -1,0 +1,251 @@
+## 1. Gerar Números aleatórios entre 1 e 200 para A1 até a10
+## 2. Os numeros acima de 100 vermelho e abaixo azul
+
+Sub gerarNumeros()
+    
+    Dim nInicio, nFim As Integer
+    Dim intervalo, celula As Range
+    Set intervalo = Range("a1:a10")
+    
+    nInicio = 1
+    nFim = 200
+    
+    For Each celula In intervalo
+        celula.Value = Int((nInicio - nFim + 1) * Rnd + nFim)
+        Call formata(celula)
+    Next celula
+    
+End Sub
+
+Sub formata(celula As Range)
+
+    If celula.Value > 100 Then
+        celula.Font.Color = vbRed
+    Else
+        celula.Font.Color = vbBlue
+    End If
+
+End Sub
+
+
+## 1. Somar o intervalo selecionado
+Sub somaSel()
+    
+    Dim intervalo, celula As Range
+    Set intervalo = Selection
+    
+    Dim total As Double
+    total = 0
+    
+    For Each celula In intervalo
+        total = total + celula
+    Next celula
+        
+    MsgBox total
+
+End Sub
+
+
+###############
+' 1. Somar os vendedores
+' 2. Realçar o menor
+' 3. Realçar o maior
+
+
+Sub cTotal()
+    
+ n = 2
+
+ Do While Cells(n, 1) <> ""
+    
+    Cells(n, 1).Font.Bold = False
+    
+    Set intervalo = Range(Cells(n, 2), Cells(n, 7))
+    
+    Cells(n, 8) = Application.WorksheetFunction.Sum(intervalo)
+    menor = Application.WorksheetFunction.Min(intervalo)
+    maior = Application.WorksheetFunction.Max(intervalo)
+    
+    For Each celula In intervalo
+        If celula = menor Then
+            celula.Font.Color = vbRed
+        End If
+        If celula = maior Then
+            celula.Font.Color = vbGreen
+        End If
+        
+    Next celula
+    
+    
+        
+    n = n + 1
+        
+        
+    Loop
+   
+End Sub
+
+
+#############
+' 1. Estoque baixo
+
+Sub estoqueProd()
+
+    Dim intervalo, celula As Range
+    Set intervalo = Range("D_ESTOQUE")
+    
+    For Each celula In intervalo
+    
+        If celula = 0 Then
+            celula.Font.Color = vbRed
+            Cells(celula.Row, 1).Font.Color = vbRed
+            Cells(celula.Row, 2).Font.Color = vbRed
+        End If
+        
+        If celula >= 1 And celula <= 5 Then
+            celula.Font.Color = vbYellow
+        End If
+        
+    
+    Next celula
+
+End Sub
+
+############
+Sub appBingo()
+    Call cartelasGerarNum
+    Call sorteio
+    Call negritoSorteados
+    Call acertos
+    Call vencedores
+End Sub
+
+Sub sorteio()
+    Dim nInicio, nFim As Integer
+    Dim intervalo, celula, sorteados, dados As Range
+    Set intervalo = Range("DADOS_SORT")
+    Set sorteados = Range("b3:g3")
+    
+    nInicio = 1
+    nFim = 50
+    
+    
+    Range("b3") = Int((nInicio - nFim + 1) * Rnd + nFim)
+    Range("c3") = Int((nInicio - nFim + 1) * Rnd + nFim)
+    Range("d3") = Int((nInicio - nFim + 1) * Rnd + nFim)
+    Range("e3") = Int((nInicio - nFim + 1) * Rnd + nFim)
+    Range("f3") = Int((nInicio - nFim + 1) * Rnd + nFim)
+    Range("g3") = Int((nInicio - nFim + 1) * Rnd + nFim)
+End Sub
+
+Sub negritoSorteados()
+    
+    Dim nInicio, nFim As Integer
+    Dim intervalo, celula, sorteados, dados As Range
+    Set intervalo = Range("DADOS_SORT")
+    Set sorteados = Range("b3:g3")
+    
+    
+    For Each celula In intervalo
+        For Each s In sorteados
+            If Cells(celula.Row, 2) = s Then
+                Cells(celula.Row, 2).Font.Bold = True
+            End If
+            If Cells(celula.Row, 3) = s Then
+                Cells(celula.Row, 3).Font.Bold = True
+            End If
+            
+            If Cells(celula.Row, 4) = s Then
+                Cells(celula.Row, 4).Font.Bold = True
+            End If
+            
+            If Cells(celula.Row, 5) = s Then
+                Cells(celula.Row, 5).Font.Bold = True
+            End If
+
+            If Cells(celula.Row, 6) = s Then
+                Cells(celula.Row, 6).Font.Bold = True
+            End If
+            
+            If Cells(celula.Row, 7) = s Then
+                Cells(celula.Row, 7).Font.Bold = True
+            End If
+        Next s
+    Next celula
+    
+End Sub
+
+Sub acertos()
+    
+    Dim intervalo, celula As Range
+    Set intervalo = Range("DADOS_SORT")
+    
+    total = 0#
+    
+    For Each celula In intervalo
+    
+        t = 0
+        
+        For x = 1 To 7
+            If Cells(celula.Row, x).Font.Bold = True Then
+                t = t + 1
+            End If
+        
+       
+        Next
+        
+        Cells(celula.Row, 8) = t
+        
+    Next celula
+    
+End Sub
+
+Sub vencedores()
+
+    Dim intervalo, celula As Range
+    Set intervalo = Range("DADOS_TOT")
+    
+    vmax = Application.WorksheetFunction.Max(intervalo)
+   
+        
+    For Each celula In intervalo
+        If celula = vmax Then
+            celula.Font.Color = vbGreen
+        End If
+        
+    Next celula
+    
+End Sub
+
+Sub cartelasGerarNum()
+    Dim intervalo, celula As Range
+    Set intervalo = Range("DADOS_NUM")
+    
+    nInicio = 1
+    nFim = 50
+    
+    For Each celula In intervalo
+        
+        celula = Int((nInicio - nFim + 1) * Rnd + nFim)
+        
+        
+    Next celula
+End Sub
+
+
+##########
+
+Function AreaZ(Optional x As Integer) As Double
+
+    AreaZ = 2
+
+End Function
+
+Function AreaX(x As Double, y As Double) As Double
+
+AreaX = x * y
+
+End Function
+
+
+
